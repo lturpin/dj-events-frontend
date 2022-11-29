@@ -36,7 +36,7 @@ function EventPage({evt}) {
         <h3>Performers:</h3>
         <p>{attributes.performers}</p>
         <h3>Description:</h3>
-        <p>{attributes.descriptions}</p>
+        <p>{attributes.description}</p>
         <h3>Venue: {attributes.venue}</h3>
         <p>{attributes.address}</p>
 
