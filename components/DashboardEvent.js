@@ -3,7 +3,6 @@ import { FaPencilAlt, FaTimes} from 'react-icons/fa'
 import styles from '@/styles/DashboardEvent.module.css'
 
 export default function DashboardEvent({evt, handleDelete}) {
-  console.log('DashboardEvent:evt', evt)
   return (
     <div className={styles.event}>
       <h4>
