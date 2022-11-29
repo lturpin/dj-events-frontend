@@ -2,12 +2,12 @@ import Layout from "@/components/Layout"
 import EventsItem from "@/components/EventsItem"
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { API_URL } from "config"
-import qs from 'qs'
-// import Pagination from '@/components/Pagination'
+import { API_URL } from '@/config/index'
 
 
 function SearchPage({ events }) {
+  console.log('SearchPage:events', events)
+  console.log('API_URL', API_URL)
   const router = useRouter()
   return (
     <Layout title="Search Results">
@@ -15,50 +15,23 @@ function SearchPage({ events }) {
       <h1>Search Results from {router.query.term}</h1>
       {events.length === 0 && <h3>No events to show</h3>}
 
-      {events.map((evt) => (
+      {events.data.map((evt) => (
         <EventsItem key={evt.id} evt={evt.attributes} />
       ))}
 
-      {/* <Pagination page={page} total={total} /> */}
     </Layout>
   )
 }
 
 export async function getServerSideProps({query: {term}}) {
-  const query = qs.stringify({
-    populate: '*',
-    filters: {
-      $or: [{
-        name: {
-          $contains: term
-          }
-      },
-      {
-        performers: {
-          $contains: term
-          }  
-      },
-      {
-        descriptions: {
-          $contains: term
-          }
-      },
-      {
-        venue: {
-          $contains: term
-          }
-      }
-    ]
-    
-    }
-  })
+ 
   const eventRes = await fetch(
-    `${API_URL}/api/events?${query}`
+    `${API_URL}/api/events?populate=*&filters[*][$containsi]=${term}`
   )
   const events = await eventRes.json();
-
+  console.log('events:', events);
   return {
-    props: { events: events.data.map(a => a) }
+    props: { events }
   }
 }
 export default SearchPage
